@@ -47,5 +47,18 @@ public class DataInitializer {
                     List.of(roleUser));
             userService.addUser(user);
         }
+//        todo delete user a, b
+        User a = userService.findUserByFirstName("a");
+        if (a == null) {
+            a = new User("a", "a", 35, "a", "a",
+                    List.of(roleAdmin, roleUser));
+            userService.addUser(a);
+        }
+        User b = userService.findUserByFirstName("b");
+        if (b == null) {
+            b = new User("b", "b", 30, "b", "b",
+                    List.of(roleUser));
+            userService.addUser(b);
+        }
     }
 }
