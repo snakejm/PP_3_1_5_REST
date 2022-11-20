@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserById(Long id) {
+        return userRepository.findUserById(id);
+    }
+
+    @Override
     @Transactional
     public void updateUser(User updateUser) {
         updateUser.setPassword((updateUser.getPassword() != null && !updateUser.getPassword().trim().equals("")) ?
