@@ -92,6 +92,6 @@ public class AdminRestController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(user.getRoles(),HttpStatus.OK);
+        return new ResponseEntity<>(user.getRoles(), HttpStatus.OK);
     }
 }
