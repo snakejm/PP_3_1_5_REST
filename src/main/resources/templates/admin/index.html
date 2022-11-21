@@ -304,69 +304,12 @@
 </div>
 
 <!--Modal EDIT-->
-<!--<div id="editModal" th:attrappend="id=${user.id}" class="modal fade">-->
-<!--    <div class="modal-dialog">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h4 class="modal-title">Edit user</h4>-->
-<!--                <button class="btn-close" data-bs-dismiss="modal"></button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">-->
-<!--                <form id="editForm" th:method="PATCH" th:action="@{/admin/{id}/edit(id=${user.id})}" th:object="${user}" th:attrappend="id=${user.id}" class="text-center">-->
-<!--                    <div class="container col-6">-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editId">ID</label>-->
-<!--                            <input th:value="*{id}" type="number" id="editId" class="form-control" name="id" disabled>-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editFirstName">First-->
-<!--                                                                                  name</label>-->
-<!--                            <input th:value="*{firstName}" type="text" id="editFirstName" class="form-control" name="firstName">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editLastName">Last-->
-<!--                                                                                 name</label>-->
-<!--                            <input th:value="*{lastName}" type="text" id="editLastName" class="form-control" name="lastName">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editAge">Age</label>-->
-<!--                            <input th:value="*{age}" type="number" id="editAge" class="form-control" name="age">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editEmail">Email</label>-->
-<!--                            <input th:value="*{email}" type="text" id="editEmail" class="form-control" name="email">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editPassword">Password</label>-->
-<!--                            <input type="password" id="editPassword" class="form-control" name="password" placeholder="Password">-->
-<!--                        </div>-->
-<!--                        <div class="mb-3">-->
-<!--                            <label class="form-label fw-bold" for="editRoles">Roles</label>-->
-<!--                            <select id="editRoles" class="form-select" multiple name="roles" size="2">-->
-<!--                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.getNoPrefix()}" th:selected="${user.roles.contains(role)}"></option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">-->
-<!--                    Close-->
-<!--                </button>-->
-<!--                <button type="submit" form="editForm" th:attrappend="form=${user.id}" class="btn btn-primary">-->
-<!--                    Edit-->
-<!--                </button>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form id="formEditUser">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit user</h5>
+                    <h4 class="modal-title">Edit user</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
@@ -409,6 +352,60 @@
                                 Close
                             </button>
                             <button type="submit" class="btn btn-primary">Edit</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal DELETE-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="formDeleteUser">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete user</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="form-group required">
+                        <div class="controls">
+                            <div class="container col-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold" for="deleteId">ID</label>
+                                    <input type="number" id="deleteId" class="form-control" name="id" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold" for="deleteFirstName">First name</label>
+                                    <input type="text" id="deleteFirstName" class="form-control" name="firstName" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold" for="deleteLastName">Last name</label>
+                                    <input type="text" id="deleteLastName" class="form-control" name="lastName" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold" for="deleteAge">Age</label>
+                                    <input type="number" id="deleteAge" class="form-control" name="age" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold" for="deleteEmail">Email</label>
+                                    <input type="text" id="deleteEmail" class="form-control" name="email" disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold" for="deleteRolesUser">Roles</label>
+                                    <select id="deleteRolesUser" class="form-select" multiple name="roles" size="2" disabled>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" id="deleteFormCloseButton" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </div>
                         </div>
                     </div>
                 </div>

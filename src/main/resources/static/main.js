@@ -3,7 +3,8 @@ $(document).ready(async function () {
     await getPrincipal();
     // todo hide admin button for user
     await getAllUsers();
-    editUser();
+    await editUser();
+    await deleteUser();
 });
 
 // Заполнение шапки
@@ -53,16 +54,16 @@ async function getUser(id) {
     return await response.json();
 }
 
-/*show Edit modal*/
+/*заполнение Edit modal*/
 {
-    $("#editModal").on("show.bs.modal", ev => {
-        let button = $(ev.relatedTarget);
-        let id = button.data('id');
+    $("#editModal").on("show.bs.modal", event => {
+        let button = $(event.relatedTarget);
+        let id = button.data("id");
         showEditModal(id);
     })
 
     async function showEditModal(id) {
-        $('#editRolesUser').empty();
+        $("#editRolesUser").empty();
         let user = await getUser(id);
         let form = document.forms["formEditUser"];
         form.id.value = user.id;
@@ -72,7 +73,7 @@ async function getUser(id) {
         form.email.value = user.email;
         //todo form.password.value = user.password;
 
-        await fetch("http://localhost:8080/api/roles")
+        fetch("http://localhost:8080/api/roles")
             .then(response => response.json())
             .then(roles => {
                 roles.forEach(role => {
@@ -95,18 +96,18 @@ async function getUser(id) {
 /*Edit user*/
 async function editUser() {
     const editForm = document.forms["formEditUser"];
-    editForm.addEventListener("submit", ev => {
-        ev.preventDefault();
+    editForm.addEventListener("submit", event => {
+        event.preventDefault();
         let editUserRoles = [];
         for (let i = 0; i < editForm.roles.options.length; i++) {
             if (editForm.roles.options[i].selected) editUserRoles.push({
-                id : editForm.roles.options[i].value,
-                name : "ROLE_" + editForm.roles.options[i].text
+                id: editForm.roles.options[i].value,
+                name: "ROLE_" + editForm.roles.options[i].text
             })
         }
 
-        fetch("http://localhost:8080/api/users/" + editForm.id.value, {
-            method: 'PUT',
+        fetch(`http://localhost:8080/api/users/${editForm.id.value}`, {
+            method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -120,9 +121,51 @@ async function editUser() {
                 roles: editUserRoles
             })
         }).then(() => {
-            $('#editFormCloseButton').click();
+            $("#editFormCloseButton").click();
             getAllUsers();
         })
     })
 }
 
+/*заполнение Delete modal*/
+{
+    $("#deleteModal").on("show.bs.modal", event => {
+        let button = $(event.relatedTarget);
+        let id = button.data("id");
+        showDeleteModal(id);
+    })
+
+    async function showDeleteModal(id) {
+        $("#deleteRolesUser").empty();
+        let user = await getUser(id);
+        let form = document.forms["formDeleteUser"];
+        form.id.value = user.id;
+        form.firstName.value = user.firstName;
+        form.lastName.value = user.lastName;
+        form.age.value = user.age;
+        form.email.value = user.email;
+
+        console.log(user.roles);
+        user.roles.forEach(role => {
+            console.log(role)
+            let optionElement = document.createElement("option");
+            optionElement.text = role.noPrefix;
+            optionElement.value = role.id;
+            document.getElementById("deleteRolesUser").appendChild(optionElement);
+        })
+    }
+}
+
+/*Delete user*/
+async function deleteUser() {
+    const deleteForm = document.forms["formDeleteUser"];
+    deleteForm.addEventListener("submit", event => {
+        event.preventDefault();
+        fetch(`http://localhost:8080/api/users/${deleteForm.id.value}`, {
+            method: "DELETE"
+        }).then(() => {
+            $("#deleteFormCloseButton").click();
+            getAllUsers();
+        })
+    })
+}
