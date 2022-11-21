@@ -26,6 +26,6 @@ public class UserController {
         User user = userService.findUserByEmail(principal.getName());
         model.addAttribute("user", user);
         model.addAttribute("roles", user.getRoles());
-        return "user/index";
+        return "admin/index";
     }
 }
