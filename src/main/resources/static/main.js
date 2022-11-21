@@ -5,6 +5,8 @@ $(document).ready(async function () {
     await getAllUsers();
     await editUser();
     await deleteUser();
+    await showNewUserTab()
+    await addNewUserButtonListener();
 });
 
 // Заполнение шапки
@@ -100,10 +102,12 @@ async function editUser() {
         event.preventDefault();
         let editUserRoles = [];
         for (let i = 0; i < editForm.roles.options.length; i++) {
-            if (editForm.roles.options[i].selected) editUserRoles.push({
-                id: editForm.roles.options[i].value,
-                name: "ROLE_" + editForm.roles.options[i].text
-            })
+            if (editForm.roles.options[i].selected) {
+                editUserRoles.push({
+                    id: editForm.roles.options[i].value,
+                    role: "ROLE_" + editForm.roles.options[i].text
+                })
+            }
         }
 
         fetch(`http://localhost:8080/api/users/${editForm.id.value}`, {
@@ -145,9 +149,7 @@ async function editUser() {
         form.age.value = user.age;
         form.email.value = user.email;
 
-        console.log(user.roles);
         user.roles.forEach(role => {
-            console.log(role)
             let optionElement = document.createElement("option");
             optionElement.text = role.noPrefix;
             optionElement.value = role.id;
@@ -167,5 +169,56 @@ async function deleteUser() {
             $("#deleteFormCloseButton").click();
             getAllUsers();
         })
+    })
+}
+
+/*Prepare new user roles*/
+async function showNewUserTab() {
+    let roles = await fetch("http://localhost:8080/api/roles")
+        .then(response => response.json());
+    for (let role of roles) {
+        let optionElement = document.createElement("option");
+        optionElement.text = role.noPrefix;
+        optionElement.value = role.id;
+        if (role.id === 2) {
+            optionElement.selected = true;
+        }
+        document.getElementById("newUserRoles").appendChild(optionElement);
+    }
+}
+
+/*Add new user*/
+async function addNewUserButtonListener() {
+    const newUserForm = document.forms["formNewUser"];
+    newUserForm.addEventListener("submit", event => {
+        event.preventDefault();
+        let newUserRoles = [];
+        console.log(newUserForm.roles.options);
+        for (const option of newUserForm.roles.options) {
+            if (option.selected) {
+                newUserRoles.push({
+                    id: option.value,
+                    role: `ROLE_${option.text}`
+                })
+            }
+        }
+        fetch("http://localhost:8080/api/users", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                firstName: newUserForm.firstName.value,
+                lastName: newUserForm.lastName.value,
+                age: newUserForm.age.value,
+                email: newUserForm.email.value,
+                password: newUserForm.password.value,
+                roles: newUserRoles
+            })
+        }).then(() => {
+            newUserForm.reset();
+            getAllUsers();
+            $("#navLinkAllUsersPanel").click();
+        });
     })
 }
