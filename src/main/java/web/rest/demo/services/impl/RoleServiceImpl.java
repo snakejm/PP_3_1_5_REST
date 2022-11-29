@@ -2,6 +2,7 @@ package web.rest.demo.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import web.rest.demo.models.Role;
 import web.rest.demo.repositories.RoleRepository;
 import web.rest.demo.services.RoleService;
@@ -19,6 +20,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public void addRole(Role role) {
         roleRepository.save(role);
     }
