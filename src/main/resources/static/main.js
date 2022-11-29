@@ -24,6 +24,7 @@ $(document).ready(async function () {
     } else {
         $("#btnInfoPanel").click();
         $("#btnAdminPanel").hide();
+        document.title = "User information-page";
     }
 
 });

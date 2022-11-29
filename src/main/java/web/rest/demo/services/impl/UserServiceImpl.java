@@ -1,6 +1,5 @@
 package web.rest.demo.services.impl;
 
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,9 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByUsername(String username) {
-        User user = userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        Hibernate.initialize(user.getRoles());
-        return user;
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     @Override
