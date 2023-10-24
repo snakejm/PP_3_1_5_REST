@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  mysql:
+    container_name: pp_rest_mysql
+    image: mysql:8.1
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: pp_rest
+    ports:
+      - "3306:3306"
